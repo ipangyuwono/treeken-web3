@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import ConnectWallet from './components/ConnectWallet'
 import Transact from './components/Transact'
 import AppCalls from './components/AppCalls'
+import Account from './components/Account'
 
 interface HomeProps {}
 
@@ -26,49 +27,119 @@ const Home: React.FC<HomeProps> = () => {
   }
 
   return (
-    <div className="hero min-h-screen bg-teal-400">
-      <div className="hero-content text-center rounded-lg p-6 max-w-md bg-white mx-auto">
-        <div className="max-w-md">
-          <h1 className="text-4xl">
-            Welcome to <div className="font-bold">AlgoKit 🙂</div>
-          </h1>
-          <p className="py-6">
-            This starter has been generated using official AlgoKit React template. Refer to the resource below for next steps.
-          </p>
-
-          <div className="grid">
-            <a
-              data-test-id="getting-started"
-              className="btn btn-primary m-2"
-              target="_blank"
-              href="https://github.com/algorandfoundation/algokit-cli"
-            >
-              Getting started
-            </a>
-
-            <div className="divider" />
-            <button data-test-id="connect-wallet" className="btn m-2" onClick={toggleWalletModal}>
-              Wallet Connection
-            </button>
-
-            {activeAddress && (
-              <button data-test-id="transactions-demo" className="btn m-2" onClick={toggleDemoModal}>
-                Transactions Demo
-              </button>
-            )}
-
-            {activeAddress && (
-              <button data-test-id="appcalls-demo" className="btn m-2" onClick={toggleAppCallsModal}>
-                Contract Interactions Demo
+    <div className="website-container">
+      {/* Navigation */}
+      <nav className="navbar">
+        <div className="nav-content">
+          <div className="logo">
+            <span className="logo-icon">🌳</span>
+            <span className="logo-text">Treeken</span>
+          </div>
+          <div className="nav-actions">
+            {activeAddress ? (
+              <div className="account-info">
+                <Account />
+              </div>
+            ) : (
+              <button data-test-id="connect-wallet" className="btn btn-nav" onClick={toggleWalletModal}>
+                🔗 Hubungkan Wallet
               </button>
             )}
           </div>
-
-          <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
-          <Transact openModal={openDemoModal} setModalState={setOpenDemoModal} />
-          <AppCalls openModal={appCallsDemoModal} setModalState={setAppCallsDemoModal} />
         </div>
-      </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="hero-content">
+          <h1 className="hero-title">
+            Welcome to  <span className="">Treeken</span>
+          </h1>
+          <p className="hero-subtitle">
+            An eco-friendly blockchain platform that links every token to a real-world tree.
+            Let’s plant a greener future together!
+          </p>
+          <div className="hero-actions">
+            <button data-test-id="connect-wallet-hero" className="btn btn-primary btn-large" onClick={toggleWalletModal}>
+              🌲Start Now
+            </button>
+            <a
+              data-test-id="getting-started"
+              className="btn btn-secondary btn-large"
+              target="_blank"
+              href="https://github.com/ipangyuwono/"
+            >
+              🌿 See The Source Code
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="section features-section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">Our Feature</h2>
+            <div className="section-divider"></div>
+          </div>
+          <div className="features-grid">
+            <div className="feature-card">
+              <div className="feature-icon">🔗</div>
+              <h3>Transparency</h3>
+              <p>
+               All transactions are recorded on the Algorand blockchain, ensuring transparency and security for every Treeken token you own.
+              </p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">🔐</div>
+              <h3>Secure & reliable </h3>
+              <p>
+                Using audited smart contracts and Algorand blockchain technology that has proven security.
+              </p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">💳</div>
+              <h3>Easy to use</h3>
+              <p>
+                A user-friendly interface allows anyone to start using Treeken without in-depth technical knowledge.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-content">
+            <div className="footer-section">
+              <div className="footer-logo">
+                <span className="logo-icon">🌳</span>
+                <span className="logo-text">Treeken</span>
+              </div>
+            </div>
+            <div className="footer-section">
+              <h4>Links</h4>
+              <ul>
+                <li><a href="https://github.com/ipangyuwono/" target="_blank">GitHub</a></li>
+                <li><a href="https://www.algorand.com/" target="_blank">Algorand</a></li>
+                <li><a href="https://www.instagram.com/ipangyuwono70" target="_blank">Instagram</a></li>
+                <li><a href="https://mail.google.com/mail/u/0/#inbox" target="_blank">Gmail</a></li>
+              </ul>
+            </div>
+            <div className="footer-section">
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2025. Treeken all right reserved</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Modals */}
+      <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
+      <Transact openModal={openDemoModal} setModalState={setOpenDemoModal} />
+      <AppCalls openModal={appCallsDemoModal} setModalState={setAppCallsDemoModal} />
     </div>
   )
 }

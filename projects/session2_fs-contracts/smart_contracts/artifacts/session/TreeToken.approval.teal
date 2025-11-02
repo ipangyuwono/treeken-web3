@@ -1,0 +1,230 @@
+#pragma version 11
+#pragma typetrack false
+
+// algopy.arc4.ARC4Contract.approval_program() -> uint64:
+main:
+    intcblock 0 1 8
+    bytecblock "is_planted" "last_watered" "for_sale" "price" 0x151f7c75
+    txn ApplicationID
+    bnz main_after_if_else@2
+    // smart_contracts/session/contract.py:7-8
+    // # Panggil konstruktor induk untuk inisialisasi ARC4Contract
+    // self.is_planted = bool(False)
+    bytec_0 // "is_planted"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/session/contract.py:9
+    // self.last_watered = UInt64(0)  # Timestamp terakhir disiram
+    bytec_1 // "last_watered"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/session/contract.py:10
+    // self.for_sale = bool(False)
+    bytec_2 // "for_sale"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/session/contract.py:11
+    // self.price = UInt64(0)
+    bytec_3 // "price"
+    intc_0 // 0
+    app_global_put
+
+main_after_if_else@2:
+    // smart_contracts/session/contract.py:5
+    // class TreeToken(ARC4Contract):
+    txn NumAppArgs
+    bz main___algopy_default_create@15
+    txn OnCompletion
+    !
+    assert // OnCompletion must be NoOp
+    txn ApplicationID
+    assert
+    pushbytess 0xad39cd42 0x99b5fa9b 0xf4a3426b 0x893a5c1f 0x3cfd459c 0xff2ba5c5 // method "plant_tree()string", method "water_tree()string", method "get_last_watered()uint64", method "list_for_sale(uint64)string", method "buy_tree(address,uint64)string", method "get_owner()address"
+    txna ApplicationArgs 0
+    match plant_tree water_tree get_last_watered list_for_sale buy_tree get_owner
+    err
+
+main___algopy_default_create@15:
+    txn OnCompletion
+    !
+    txn ApplicationID
+    !
+    &&
+    assert // OnCompletion must be NoOp && can only call when creating
+    intc_1 // 1
+    return
+
+
+// smart_contracts.session.contract.TreeToken.plant_tree[routing]() -> void:
+plant_tree:
+    // smart_contracts/session/contract.py:15
+    // assert Txn.sender == Global.creator_address, "Hanya owner yang bisa menanam pohon"
+    txn Sender
+    global CreatorAddress
+    ==
+    assert // Hanya owner yang bisa menanam pohon
+    // smart_contracts/session/contract.py:16
+    // assert not self.is_planted, "Pohon sudah ditanam"
+    intc_0 // 0
+    bytec_0 // "is_planted"
+    app_global_get_ex
+    assert // check self.is_planted exists
+    !
+    assert // Pohon sudah ditanam
+    // smart_contracts/session/contract.py:18
+    // self.is_planted = bool(True)
+    bytec_0 // "is_planted"
+    intc_1 // 1
+    app_global_put
+    // smart_contracts/session/contract.py:19
+    // self.last_watered = Global.latest_timestamp
+    bytec_1 // "last_watered"
+    global LatestTimestamp
+    app_global_put
+    // smart_contracts/session/contract.py:13
+    // @abimethod()
+    pushbytes 0x151f7c750017506f686f6e20626572686173696c20646974616e616d21
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.session.contract.TreeToken.water_tree[routing]() -> void:
+water_tree:
+    // smart_contracts/session/contract.py:24
+    // assert self.is_planted, "Pohon belum ditanam"
+    intc_0 // 0
+    bytec_0 // "is_planted"
+    app_global_get_ex
+    assert // check self.is_planted exists
+    assert // Pohon belum ditanam
+    // smart_contracts/session/contract.py:26
+    // self.last_watered = Global.latest_timestamp
+    bytec_1 // "last_watered"
+    global LatestTimestamp
+    app_global_put
+    // smart_contracts/session/contract.py:22
+    // @abimethod()
+    pushbytes 0x151f7c750014506f686f6e2074656c6168206469736972616d21
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.session.contract.TreeToken.get_last_watered[routing]() -> void:
+get_last_watered:
+    // smart_contracts/session/contract.py:31
+    // return self.last_watered
+    intc_0 // 0
+    bytec_1 // "last_watered"
+    app_global_get_ex
+    assert // check self.last_watered exists
+    // smart_contracts/session/contract.py:29
+    // @abimethod(readonly=True)
+    itob
+    bytec 4 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.session.contract.TreeToken.list_for_sale[routing]() -> void:
+list_for_sale:
+    // smart_contracts/session/contract.py:33
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_2 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // smart_contracts/session/contract.py:35
+    // assert Txn.sender == Global.creator_address, "Hanya owner yang bisa menjual"
+    txn Sender
+    global CreatorAddress
+    ==
+    assert // Hanya owner yang bisa menjual
+    // smart_contracts/session/contract.py:36
+    // self.for_sale = bool(True)
+    bytec_2 // "for_sale"
+    intc_1 // 1
+    app_global_put
+    // smart_contracts/session/contract.py:37
+    // self.price = price
+    bytec_3 // "price"
+    swap
+    app_global_put
+    // smart_contracts/session/contract.py:33
+    // @abimethod()
+    pushbytes 0x151f7c75002c506f686f6e2064696a75616c2064656e67616e206861726761207b70726963657d206d6963726f416c676f73
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.session.contract.TreeToken.buy_tree[routing]() -> void:
+buy_tree:
+    // smart_contracts/session/contract.py:40
+    // @abimethod()
+    txna ApplicationArgs 1
+    len
+    pushint 32 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 2
+    dup
+    len
+    intc_2 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // smart_contracts/session/contract.py:42
+    // assert self.for_sale, "Pohon tidak dijual"
+    intc_0 // 0
+    bytec_2 // "for_sale"
+    app_global_get_ex
+    assert // check self.for_sale exists
+    assert // Pohon tidak dijual
+    // smart_contracts/session/contract.py:43
+    // assert payment >= self.price, "Pembayaran tidak cukup"
+    intc_0 // 0
+    bytec_3 // "price"
+    app_global_get_ex
+    assert // check self.price exists
+    >=
+    assert // Pembayaran tidak cukup
+    // smart_contracts/session/contract.py:46
+    // self.for_sale = bool(False)
+    bytec_2 // "for_sale"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/session/contract.py:47
+    // self.price = UInt64(0)
+    bytec_3 // "price"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/session/contract.py:40
+    // @abimethod()
+    pushbytes 0x151f7c75001c4b6570656d696c696b616e20706f686f6e2062657270696e64616821
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.session.contract.TreeToken.get_owner[routing]() -> void:
+get_owner:
+    // smart_contracts/session/contract.py:50
+    // @abimethod(readonly=True)
+    bytec 4 // 0x151f7c75
+    // smart_contracts/session/contract.py:52
+    // return Global.creator_address
+    global CreatorAddress
+    // smart_contracts/session/contract.py:50
+    // @abimethod(readonly=True)
+    concat
+    log
+    intc_1 // 1
+    return
