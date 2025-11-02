@@ -103,14 +103,3 @@ Akses di: [http://localhost:3000](http://localhost:3000)
 * [ ] Token Launch (TKN)
 * [ ] DAO Governance
 * [ ] Global Green Partnership Program
-
----
-
-## 💬 Kontribusi
-
-Kami menyambut siapa pun yang ingin berkontribusi dalam membangun masa depan hijau berbasis blockchain 🌱
-Silakan buat *issue* atau *pull request* untuk ide, fitur, atau perbaikan bug.
-
-
-
-Apakah kamu ingin saya bantu tambahkan **bagian contoh interaksi smart contract (plant_tree, water_tree, dll) dengan kode Python client** juga? Itu bisa jadi bagian tambahan README agar developer lain tahu cara menggunakan kontrakmu.
